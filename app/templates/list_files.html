@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Uploaded Files</title>
+</head>
+<body>
+    <h2>List of Uploaded Files</h2>
+    <h3>JSON Files:</h3>
+    <ul>
+        {% for file in json_files %}
+        <li>{{ file }}</li>
+        {% empty %}
+        <li>No JSON files found.</li>
+        {% endfor %}
+    </ul>
+    <h3>XML Files:</h3>
+    <ul>
+        {% for file in xml_files %}
+        <li>{{ file }}</li>
+        {% empty %}
+        <li>No XML files found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'index' %}">Back to Home</a>
+</body>
+</html>
