@@ -3,26 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Uploaded Files</title>
+    <title>Список загруженных файлов</title>
 </head>
 <body>
-    <h2>List of Uploaded Files</h2>
-    <h3>JSON Files:</h3>
+    <h2>Список загруженных файлов</h2>
+
+    <!-- JSON файлы -->
+    <h3>JSON Файлы:</h3>
     <ul>
         {% for file in json_files %}
-        <li>{{ file }}</li>
+        <li>
+            <a href="{% url 'view_file' file %}">{{ file }}</a>
+            <form action="{% url 'import_to_db' file %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Добавить в базу данных</button>
+            </form>
+            <!-- Кнопка удаления -->
+            <form action="{% url 'delete_file' file %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот файл?');">✖️</button>
+            </form>
+        </li>
         {% empty %}
-        <li>No JSON files found.</li>
+        <li>Нет найденных JSON файлов.</li>
         {% endfor %}
     </ul>
-    <h3>XML Files:</h3>
+
+    <!-- XML файлы -->
+    <h3>XML Файлы:</h3>
     <ul>
         {% for file in xml_files %}
-        <li>{{ file }}</li>
+        <li>
+            <a href="{% url 'view_file' file %}">{{ file }}</a>
+            <form action="{% url 'import_to_db' file %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Добавить в базу данных</button>
+            </form>
+            <!-- Кнопка удаления -->
+            <form action="{% url 'delete_file' file %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот файл?');">✖️</button>
+            </form>
+        </li>
         {% empty %}
-        <li>No XML files found.</li>
+        <li>Нет найденных XML файлов.</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'index' %}">Back to Home</a>
+
+    <!-- Ссылка назад -->
+    <a href="{% url 'index' %}">Назад на главную</a>
 </body>
 </html>
