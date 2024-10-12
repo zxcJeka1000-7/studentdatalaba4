@@ -3,15 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save Student Data</title>
+    <title>Сохранение данных студента</title>
 </head>
 <body>
-    <h2>Save Student Data</h2>
+    <h2>Сохранение данных студента</h2>
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}  <!-- Отображаем форму -->
-        <button type="submit">Save</button>
+        <button type="submit">Сохранить</button>
     </form>
-    <a href="{% url 'index' %}">Back to Home</a>
+
+    {% if form.errors %}
+        <div style="color: red;">
+            <h4>Ошибки:</h4>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field }}: {{ errors|join:", " }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <a href="{% url 'index' %}">Назад на главную</a>
 </body>
 </html>

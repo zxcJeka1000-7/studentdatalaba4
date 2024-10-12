@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр файла {{ file_name }}</title>
+</head>
+<body>
+    <h2>Содержимое файла: {{ file_name }}</h2>
+
+    <!-- Проверяем, если данные представлены как словарь (один студент) -->
+    {% if data.name %}
+    <p><strong>Имя:</strong> {{ data.name }}</p>
+    <p><strong>Предмет:</strong> {{ data.subject }}</p>
+    <p><strong>Оценка:</strong> {{ data.grade }}</p>
+    {% else %}
+    <!-- Если данные представляют список студентов -->
+    <ul>
+        {% for student in data.students %}
+        <li>
+            <strong>Имя:</strong> {{ student.name }} |
+            <strong>Предмет:</strong> {{ student.subject }} |
+            <strong>Оценка:</strong> {{ student.grade }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <a href="{% url 'list_files' %}">Назад к списку файлов</a>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>База данных студентов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse; /* Убираем промежутки между ячейками */
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd; /* Границы ячеек */
+            text-align: left;
+            padding: 8px; /* Отступы внутри ячеек */
+        }
+
+        th {
+            background-color: #f2f2f2; /* Цвет фона для заголовков */
+        }
+
+        tr:hover {
+            background-color: #f1f1f1; /* Цвет строки при наведении */
+        }
+        /* Стили для столбца "Оценка" */
+        td.grade {
+            width: 50px; /* Ширина для столбца Оценка */
+            text-align: center; /* Центрируем текст */
+        }
+        /* Стили для столбца "Действия" */
+        td.actions {
+            width: 30px; /* Ширина для кнопки удаления */
+            text-align: center; /* Центрируем текст */
+        }
+
+        button {
+            background-color: white; /* Цвет фона кнопки */
+            color: black; /* Цвет текста */
+            border: 1px solid #dddddd; /* Граница кнопки */
+            border-radius: 3px; /* Закругленные углы */
+            padding: 0; /* Убираем внутренние отступы */
+            cursor: pointer;
+            width: 25px; /* Ширина кнопки */
+            height: 25px; /* Высота кнопки */
+            line-height: 25px; /* Центрируем текст по вертикали */
+            text-align: center; /* Центрируем текст по горизонтали */
+        }
+
+            button:hover {
+                background-color: #f0f0f0; /* Цвет кнопки при наведении */
+            }
+    </style>
+</head>
+<body>
+    <h2>База данных студентов</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Предмет</th>
+                <th class="grade">Оценка</th> <!-- Применяем класс к столбцу Оценка -->
+                <th class="actions">Действия</th> <!-- Применяем класс к столбцу Действия -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.name }}</td>
+                <td>{{ student.subject }}</td>
+                <td class="grade">{{ student.grade }}</td> <!-- Применяем класс к ячейке Оценка -->
+                <td class="actions">
+                    <form action="{% url 'delete_student' student.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить эту запись?');">✖️</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Нет записей студентов.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'index' %}">Назад на главную</a>
+</body>
+</html>
