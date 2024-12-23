@@ -37,6 +37,10 @@
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
     <Compile Include="app\migrations\__init__.py" />
+    <Compile Include="docs\forms.py" />
+    <Compile Include="docs\models.py" />
+    <Compile Include="docs\urls.py" />
+    <Compile Include="docs\views.py" />
     <Compile Include="manage.py" />
     <Compile Include="studentdata\__init__.py" />
     <Compile Include="studentdata\settings.py" />
@@ -50,18 +54,22 @@
     <Folder Include="docs\media\" />
     <Folder Include="media\" />
     <Folder Include="docs\" />
+    <Folder Include="static\" />
     <Folder Include="studentdata\" />
-    <Folder Include="studentdata\media\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\templates\index.html" />
     <Content Include="app\templates\save_student.html" />
     <Content Include="app\templates\upload_file.html" />
     <Content Include="app\templates\list_files.html" />
+    <Content Include="app\templates\view_file.html" />
+    <Content Include="app\templates\student_list.html" />
     <Content Include="docs\index.html" />
     <Content Include="docs\list_files.html" />
     <Content Include="docs\save_student.html" />
+    <Content Include="docs\student_list.html" />
     <Content Include="docs\upload_file.html" />
+    <Content Include="docs\view_file.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
   </ItemGroup>

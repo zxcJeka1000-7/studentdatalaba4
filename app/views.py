@@ -1,4 +1,3 @@
-# app/views.py
 import json
 import os
 import xml.etree.ElementTree as ET
@@ -119,6 +118,7 @@ def view_file(request, file_name):
             Student.objects.create(name=name, subject=subject, grade=float(grade))  # Преобразуем grade в float
 
         data = ET.tostring(root, encoding='utf-8').decode('utf-8')
+        data = load_students_from_xml(file_path)
         return render(request, 'view_file.html', {'data': data, 'file_name': file_name})
 
     return HttpResponse("Файл не найден", status=404)
@@ -184,3 +184,50 @@ def delete_file(request, file_name):
         return HttpResponse("Файл не найден.", status=404)
 
     return redirect('list_files')  # Перенаправляем на страницу со списком файлов
+
+
+
+# Функция для сохранения студентов в XML
+def save_student_to_xml(request):
+    students = Student.objects.all()
+    root = ET.Element("students")
+    for student in students:
+        student_element = ET.SubElement(root, "student")
+        ET.SubElement(student_element, "name").text = student.name
+        ET.SubElement(student_element, "subject").text = student.subject
+        ET.SubElement(student_element, "grade").text = str(student.grade)
+    
+    tree = ET.ElementTree(root)
+    response = HttpResponse(content_type='application/xml')
+    response['Content-Disposition'] = 'attachment; filename="students.xml"'
+    tree.write(response, encoding="utf-8", xml_declaration=True)
+    return response
+
+# Функция для загрузки студентов из XML
+def load_students_from_xml(request):
+    if request.method == 'POST' and request.FILES['file']:
+        file = request.FILES['file']
+        try:
+            tree = ET.parse(file)
+            root = tree.getroot()
+            for student_element in root.findall('student'):
+                name = student_element.find('name').text
+                subject = student_element.find('subject').text
+                grade = int(student_element.find('grade').text)
+                Student.objects.create(name=name, subject=subject, grade=grade)
+            return redirect('student_list')
+        except ET.ParseError:
+            return render(request, 'upload_file.html', {'error': 'Некорректный XML файл'})
+    return render(request, 'upload_file.html')
+
+def is_valid_xml(file):
+    try:
+        tree = ET.parse(file)
+        root = tree.getroot()
+        
+        for student in root.findall("student"):
+            if student.find("name") is None or student.find("subject") is None or student.find("grade") is None:
+                return False
+        return True
+    except ET.ParseError:
+        return False
